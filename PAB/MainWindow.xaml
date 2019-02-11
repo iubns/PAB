@@ -14,8 +14,8 @@
             <ColumnDefinition Width="2*"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <TextBox Grid.Row="0" Grid.ColumnSpan="2" Grid.Column="0" Margin="5" KeyDown="SearchTextBoxKeyDown" Text="{Binding searchWord}"/>
-        <Button  x:Name="searchingButton" Grid.Row="0" Grid.Column="2" Margin="5" Content="검색"  Command="{Binding search}"/>
+        <TextBox Grid.Row="0" Grid.ColumnSpan="2" Grid.Column="0" Margin="5" KeyDown="SearchTextBoxKeyDown" Text="{Binding SearchWord}"/>
+        <Button  x:Name="searchingButton" Grid.Row="0" Grid.Column="2" Margin="5" Content="검색"  Command="{Binding Search}"/>
         <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="60"/>
@@ -35,19 +35,18 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="25"/>
                 </Grid.ColumnDefinitions>
-                <TextBox Grid.Column="0" Margin="5" Text="{Binding setting.fontSize,StringFormat={}{0} px}" />
+                <TextBox Grid.Column="0" Margin="5" Text="{Binding Setting.fontSize,StringFormat={}{0} px}" />
             </Grid>
             <Label Grid.Column="2" Content="글꼴" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-            <TextBox Grid.Column="3" Margin="5"  Text="{Binding setting.fontName}"/>
+            <TextBox Grid.Column="3" Margin="5"  Text="{Binding Setting.fontName}"/>
             <Label Grid.Column="4" Content="배경 파일" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-            <Button Grid.Column="5" Margin="5" Content="{Binding setting.backgoundFilePath}" Command="{Binding selectBackgound}"/>
+            <Button Grid.Column="5" Margin="5" Content="{Binding Setting.backgoundFilePath}" Command="{Binding SelectBackgound}"/>
 
             <Label Grid.Column="7" Margin="5" Content="교회 이름"/>
-            <TextBox Grid.Column="8" Margin="5" Text="{Binding setting.churchName}"/>
-            <Button Grid.Column="9" Margin="5" Content="중복 확인" Command="{Binding CheckChurchName}"/>
+            <TextBox x:Name="churchNameTextBox" Grid.Column="8" Margin="5" Text="{Binding Setting.churchName}" LostFocus="CheckChurchName"/>
 
         </Grid>
-        <ListView Grid.Row="2" Grid.RowSpan="2" Grid.Column="0" Margin="5" ItemsSource="{Binding searchList}" SelectedIndex="{Binding selectMusic}">
+        <ListView Grid.Row="2" Grid.RowSpan="2" Grid.Column="0" Margin="5" ItemsSource="{Binding SearchList}" SelectedIndex="{Binding SelectMusic}">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <StackPanel>
@@ -56,8 +55,8 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-        <TextBox Grid.Row="2" Grid.RowSpan="2" Grid.Column="1" Margin="5" AcceptsReturn="True" Text="{Binding content}"/>
-        <ListView Grid.Row="2" Grid.Column="2" Margin="5" ItemsSource="{Binding makeList}" SelectedIndex="{Binding makeSelectMusic}">
+        <TextBox Grid.Row="2" Grid.RowSpan="2" Grid.Column="1" Margin="5" AcceptsReturn="True" Text="{Binding Content}"/>
+        <ListView Grid.Row="2" Grid.Column="2" Margin="5" ItemsSource="{Binding MakeList}" SelectedIndex="{Binding MakeSelectMusic}">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <StackPanel>
@@ -73,9 +72,9 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Button Grid.Row="0" Grid.Column="0" Margin="3 0 3 5" Content="추가" Command="{Binding musicAdd}"/>
-            <Button Grid.Row="0" Grid.Column="1" Margin="3 0 3 5" Content="삭제" Command="{Binding musicDelete}"/>
-            <Button Grid.Row="0" Grid.Column="2" Margin="3 0 3 5" Content="완료" Command="{Binding pptMake}"/>
+            <Button Grid.Row="0" Grid.Column="0" Margin="3 0 3 5" Content="추가" Command="{Binding MusicAdd}"/>
+            <Button Grid.Row="0" Grid.Column="1" Margin="3 0 3 5" Content="삭제" Command="{Binding MusicDelete}"/>
+            <Button Grid.Row="0" Grid.Column="2" Margin="3 0 3 5" Content="완료" Command="{Binding PptMake}"/>
         </Grid>
     </Grid>
 </Window>

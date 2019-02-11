@@ -8,7 +8,6 @@
             fontName = Properties.Settings.Default["fontName"].ToString();
             fontSize = Properties.Settings.Default["fontSize"].ToString();
             backgoundFilePath = Properties.Settings.Default["backgoundFilePath"].ToString();
-            productionKey = Properties.Settings.Default["productionKey"].ToString();
             churchName = Properties.Settings.Default["churchName"].ToString();
         }
 

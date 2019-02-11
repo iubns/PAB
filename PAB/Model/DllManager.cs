@@ -1,22 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Reflection;
 
 namespace PAB.dll
 {
     public static class DllManager
     {
-
         private static Dictionary<string, Assembly> dict = new Dictionary<string, Assembly>();
         public static bool LoadDll(string path)
         {
             AppDomain.CurrentDomain.AssemblyResolve += Assembly_Resolve;
             Assembly curAssm = Assembly.GetExecutingAssembly();
             var temp = Assembly.GetExecutingAssembly().GetManifestResourceNames();
-            string appName = /*curAssm.GetName().Name.Replace(" ", "_")*/"pptMaker";
+            string appName = curAssm.GetName().Name;
             Assembly dllAssm = null;
             byte[] dllData;
-            using (System.IO.Stream s = curAssm.GetManifestResourceStream($"{appName}.{path}"))
+            using (Stream s = curAssm.GetManifestResourceStream($"{appName}.{path}"))
             {
                 if (s != null)
                 {

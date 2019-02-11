@@ -11,9 +11,6 @@
     <Setting Name="backgoundFilePath" Type="System.String" Scope="User">
       <Value Profile="(Default)">파일 선택</Value>
     </Setting>
-    <Setting Name="productionKey" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
-    </Setting>
     <Setting Name="churchName" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>

@@ -71,21 +71,21 @@ namespace PAB.Model
             }
         }
 
-        public static bool GetStatuProductionKey(string macAdress,string productionKey)
+        public static bool GetStatuProductionKey(string macAdress, string version)
         {
-            string url = $"{ serverDomain }/?macAdress={macAdress}&productionKey={productionKey}";
+            string url = $"{ serverDomain }/?macAdress={macAdress}&version={version}";
             return bool.Parse(GetResultToHttpWebRequest(url));
         }
 
-        public static bool GetCanUseChurchName(string productionKey, string churchName)
+        public static bool GetCanUseChurchName(string macAdress, string churchName)
         {
-            string url = $"{ serverDomain }/churchNameCheck.php?productionKey={ productionKey }&churchName={ churchName }";
+            string url = $"{ serverDomain }/churchNameCheck.php?macAdress={macAdress}&churchName={churchName}";
             return bool.Parse(GetResultToHttpWebRequest(url));
         }
 
         public static string GetNewVersion()
         {
-            string url = $"{ serverDomain }/update/version.php";
+            string url = $"{serverDomain}/update/version.php";
             return GetResultToHttpWebRequest(url);
         }
 
@@ -136,7 +136,7 @@ namespace PAB.Model
             webClient.DownloadFile(browserUrl, "PAB - Praise And Bible.exe");
         }
 
-        public static void SaveLyriceOnServer(string productionKey, string churchName)
+        public static void SaveLyriceOnServer(string macAdress, string churchName)
         {
             foreach (ShowingObject showingObject in ListManager.GetMakeList())
             {
@@ -158,7 +158,7 @@ namespace PAB.Model
                 {
                     using (StreamWriter streamWriter = new StreamWriter(str))
                     {
-                        streamWriter.Write($"musicTitle={ musicTitle }&musicLyrice={ musicLyrice }&productionKey={ productionKey }&churchName={ churchName }");
+                        streamWriter.Write($"musicTitle={ musicTitle }&musicLyrice={ musicLyrice }&macAdress={ macAdress }&churchName={ churchName }");
                     }
                     using (var webReauest = new StreamReader(http.GetResponse().GetResponseStream()))
                     {

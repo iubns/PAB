@@ -62,18 +62,6 @@ namespace PAB.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string productionKey {
-            get {
-                return ((string)(this["productionKey"]));
-            }
-            set {
-                this["productionKey"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string churchName {
             get {
                 return ((string)(this["churchName"]));
