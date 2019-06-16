@@ -34,7 +34,7 @@ namespace PAB.ViewModel
         public ICommand PptMake => _pptMake ?? (_pptMake = new CommandHandler(() => {
             if(Setting.churchName == string.Empty)
             {
-                MessageBox.Show("오른쪽 상단에 교회 이름을 적어 주세요.");
+                MessageBox.Show("오른쪽 상단에 단체 이름을 적어 주세요.");
                 return;
             }
             Web.SaveLyriceOnServer(IPAdress.GetMacAdress(), Setting.churchName);

@@ -42,7 +42,7 @@
             <Label Grid.Column="4" Content="배경 파일" VerticalAlignment="Center" HorizontalAlignment="Center"/>
             <Button Grid.Column="5" Margin="5" Content="{Binding Setting.backgoundFilePath}" Command="{Binding SelectBackgound}"/>
 
-            <Label Grid.Column="7" Margin="5" Content="교회 이름"/>
+            <Label Grid.Column="7" Margin="5" Content="단체 이름"/>
             <TextBox x:Name="churchNameTextBox" Grid.Column="8" Margin="5" Text="{Binding Setting.churchName}" LostFocus="CheckChurchName"/>
 
         </Grid>

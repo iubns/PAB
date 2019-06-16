@@ -77,7 +77,7 @@ namespace PAB.Model
                 }
                 catch
                 {
-                    MessageBox.Show("배경 파일 경로 요류");
+                    MessageBox.Show("배경 파일 경로 오류");
                 }
             }
             return slide;
