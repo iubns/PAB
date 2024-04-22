@@ -6,7 +6,8 @@
         public Setting()
         {
             fontName = Properties.Settings.Default["fontName"].ToString();
-            fontSize = Properties.Settings.Default["fontSize"].ToString();
+            musicFontSize = Properties.Settings.Default["musicFontSize"].ToString();
+            bibleFontSize = Properties.Settings.Default["bibleFontSize"].ToString();
             backgoundFilePath = Properties.Settings.Default["backgoundFilePath"].ToString();
             churchName = Properties.Settings.Default["churchName"].ToString();
         }
@@ -25,12 +26,12 @@
             }
         }
 
-        private int _fontSize = 64;
-        public string fontSize
+        private int _musicFontSize = 64;
+        public string musicFontSize
         {
             get
             {
-                return _fontSize.ToString();
+                return _musicFontSize.ToString();
             }
             set
             {
@@ -42,8 +43,30 @@
                         result += eachWord;
                     }
                 }
-                _fontSize = int.Parse(result);
-                Properties.Settings.Default["fontSize"] = _fontSize;
+                _musicFontSize = int.Parse(result);
+                Properties.Settings.Default["musicFontSize"] = _musicFontSize;
+            }
+        }
+
+        private int _bibleFontSize = 64;
+        public string bibleFontSize
+        {
+            get
+            {
+                return _bibleFontSize.ToString();
+            }
+            set
+            {
+                string result = "";
+                foreach (char eachWord in value)
+                {
+                    if (48 <= eachWord && eachWord <= 57) //numberic or letter check
+                    {
+                        result += eachWord;
+                    }
+                }
+                _bibleFontSize = int.Parse(result);
+                Properties.Settings.Default["bibleFontSize"] = _bibleFontSize;
             }
         }
 

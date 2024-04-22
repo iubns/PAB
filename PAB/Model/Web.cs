@@ -4,6 +4,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Text.RegularExpressions;
 using System.Windows;
@@ -12,41 +13,39 @@ namespace PAB.Model
 {
     public static class Web
     {
-        const string header_UA = "Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.2; Trident/6.0)";
+        const string header_UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Whale/3.25.232.19 Safari/537.36";
+        const string header_Accept = "application/json";
         const string header_ConType = "application/x-www-form-urlencoded";
         const string serverDomain = "http://iubns.com/PPTMaker";
             
         public static ObservableCollection<ShowingObject> GetMusicList(string searchWord)
         {
             ObservableCollection<ShowingObject> musicList = new ObservableCollection<ShowingObject>();
-            string url = $"https://music.naver.com/search/search.nhn?query={ searchWord }&target=track";
-            string reslut = GetResultToHttpWebRequest(url);
-            reslut = Regex.Replace(reslut, "<b>", "");
-            reslut = Regex.Replace(reslut, "</b>", "");
-            string[] trSplitResult = reslut.Split(new string[] { "<tr class=\"_tracklist_move data" }, StringSplitOptions.None);
-            for (int i = 1; i<trSplitResult.Length; i++)
+            string url = $"https://apis.naver.com/vibeWeb/musicapiweb/v4/search/track?query={searchWord}&start=1&display=100&sort=RELEVANCE&cact=ogn";
+            JObject jObject = GetJObjectToHttpWebRequest(url);
+            var musicJObjectList = jObject["response"]["result"]["tracks"];
+            if(musicJObjectList is null)
+            {
+                return musicList;
+            }
+            foreach (JObject musicJObject in musicJObjectList)
             {
                 Music music = new Music();
-
-                try
+                music.musicTitle = musicJObject.Value<string>("trackTitle");
+                string artist = "";
+                foreach (JObject artistJObject in musicJObject["artists"])
                 {
-                    music.musicTitle = trSplitResult[i].Split(new string[] { "<span class=\"ellipsis\">" }, StringSplitOptions.None)[1].Split(new string[] { "</span>" }, StringSplitOptions.None)[0];
+                    if (artist.Length == 0)
+                    {
+                        artist += artistJObject["artistName"];
+                    }
+                    else
+                    {
+                        artist += ", " + artistJObject["artistName"];
+                    }
                 }
-                catch
-                {
-                    music.musicTitle = "지원하지 않는 노래";
-                }
-
-                try
-                {
-                    music.artist = trSplitResult[i].Split(new string[] { "<span class=\"ellipsis\" >\r\n\t\t\t\r\n\t\t\t" }, StringSplitOptions.None)[1].Split(new string[] { "\r\n\t\t\t\r\n\t\t</span>" }, StringSplitOptions.None)[0];
-                }
-                catch
-                {
-                    music.artist = "알 수 없음";
-                }
-
-                music.code = int.Parse(trSplitResult[i].Split(new string[] { "<input type=\"checkbox\" class=\"_chkbox_item _disc_0 input_chk NPI" }, StringSplitOptions.None)[1].Split(new string[] { "\" title=\"선택\" test=\"false\" ></td>" }, StringSplitOptions.None)[0].Split(new string[] { "i:" },StringSplitOptions.None)[1]);
+                music.artist = artist;
+                music.code = musicJObject.Value<int>("trackId");
                 musicList.Add(music);
             }
             return musicList;
@@ -58,17 +57,14 @@ namespace PAB.Model
             {
                 return;
             }
-            string url = $"https://music.naver.com/lyric/index.nhn?trackId={ music.code }";
-            string reslut = GetResultToHttpWebRequest(url);
-            reslut = Regex.Replace(reslut, "<br />", "\n");
-            try
-            {
-                music.lyrics = reslut.Split(new string[] { "<div id=\"lyricText\" class=\"show_lyrics\">" }, StringSplitOptions.None)[1].Split(new string[] { "</div>" }, StringSplitOptions.None)[0];
-            }
-            catch
+            string url = $"https://apis.naver.com/vibeWeb/musicapiweb/vibe/v4/lyric/{ music.code }";
+            var JObject = GetJObjectToHttpWebRequest(url);
+            if(JObject is null)
             {
                 music.lyrics = "가사를 찾을 수 없음";
+                return;
             }
+            music.lyrics = JObject["response"]["result"]["lyric"]["normalLyric"].Value<string>("text");
         }
 
         public static bool GetStatuProductionKey(string macAdress, string version)
@@ -113,7 +109,7 @@ namespace PAB.Model
                 endChapters = startChapters;
             }
 
-            for (int bookIndex = 0; bookIndex<66; bookIndex++)
+            for (int bookIndex = 0; bookIndex < 66; bookIndex++)
             {
                 if(Bible.bookNames[bookIndex,0] == startBook || Bible.bookNames[bookIndex, 1] == startBook)
                 {
@@ -151,6 +147,7 @@ namespace PAB.Model
                 HttpWebRequest http = (HttpWebRequest)WebRequest.Create(url);
                 http.UserAgent = header_UA;
                 http.ContentType = header_ConType;
+                http.ContentType = header_Accept;
                 http.Method = "POST";
                 http.Timeout = 5000;
 
@@ -192,6 +189,28 @@ namespace PAB.Model
             {
                 MessageBox.Show("인터넷 연결 오류");
                 return string.Empty;
+            }
+        }
+
+        private static JObject GetJObjectToHttpWebRequest(string url)
+        {
+            HttpWebRequest http = (HttpWebRequest)WebRequest.Create(url);
+            http.UserAgent = header_UA;
+            http.Accept = header_Accept;
+            http.Method = "GET";
+            http.Timeout = 5000;
+            try
+            {
+                using (var webReauest = new StreamReader(http.GetResponse().GetResponseStream()))
+                {
+                    string result = webReauest.ReadToEnd();
+                    return JObject.Parse(result);
+                }
+            }
+            catch
+            {
+                MessageBox.Show("인터넷 연결 오류");
+                return null;
             }
         }
     }

@@ -20,6 +20,8 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="60"/>
                 <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="60"/>
+                <ColumnDefinition Width="100"/>
                 <ColumnDefinition Width="40"/>
                 <ColumnDefinition Width="100"/>
                 <ColumnDefinition Width="80"/>
@@ -29,22 +31,29 @@
                 <ColumnDefinition Width="150"/>
                 <ColumnDefinition Width="80"/>
             </Grid.ColumnDefinitions>
-            <Label Grid.Column="0" Content="글자크기" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            <Label Grid.Column="0" Content="찬송크기" VerticalAlignment="Center" HorizontalAlignment="Center"/>
             <Grid Grid.Column="1">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="25"/>
                 </Grid.ColumnDefinitions>
-                <TextBox Grid.Column="0" Margin="5" Text="{Binding Setting.fontSize,StringFormat={}{0} px}" />
+                <TextBox Grid.Column="0" Margin="5" Text="{Binding Setting.musicFontSize,StringFormat={}{0} px}" />
             </Grid>
-            <Label Grid.Column="2" Content="글꼴" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-            <TextBox Grid.Column="3" Margin="5"  Text="{Binding Setting.fontName}"/>
-            <Label Grid.Column="4" Content="배경 파일" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-            <Button Grid.Column="5" Margin="5" Content="{Binding Setting.backgoundFilePath}" Command="{Binding SelectBackgound}"/>
+            <Label Grid.Column="2" Content="말씀 크기" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            <Grid Grid.Column="3">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="25"/>
+                </Grid.ColumnDefinitions>
+                <TextBox Grid.Column="0" Margin="5" Text="{Binding Setting.bibleFontSize,StringFormat={}{0} px}" />
+            </Grid>
+            <Label Grid.Column="4" Content="글꼴" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            <TextBox Grid.Column="5" Margin="5"  Text="{Binding Setting.fontName}"/>
+            <Label Grid.Column="6" Content="배경 파일" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            <Button Grid.Column="7" Margin="5" Content="{Binding Setting.backgoundFilePath}" Command="{Binding SelectBackgound}"/>
 
-            <Label Grid.Column="7" Margin="5" Content="단체 이름"/>
-            <TextBox x:Name="churchNameTextBox" Grid.Column="8" Margin="5" Text="{Binding Setting.churchName}" LostFocus="CheckChurchName"/>
-
+            <Label Grid.Column="8" Margin="5" Content="단체 이름"/>
+            <TextBox x:Name="churchNameTextBox" Grid.Column="9" Margin="5" Text="{Binding Setting.churchName}" LostFocus="CheckChurchName"/>
         </Grid>
         <ListView Grid.Row="2" Grid.RowSpan="2" Grid.Column="0" Margin="5" ItemsSource="{Binding SearchList}" SelectedIndex="{Binding SelectMusic}">
             <ListView.ItemTemplate>
