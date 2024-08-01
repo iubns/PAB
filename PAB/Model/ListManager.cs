@@ -11,10 +11,11 @@ namespace PAB.Model
 
         public static ObservableCollection<ShowingObject> SearchAndGetResultList(string searchWord)
         {
-            if (1 < searchWord.Split('$').Length)
+            if (1 < searchWord.Split('@').Length)
             {
                 searchMusicList.Clear();
                 JObject jObject = Web.GetBible(searchWord);
+                if (jObject == null) return searchMusicList;
                 string[] bibleNames = new string[] { "개역개정", "개역한글", "공동번역", "새번역", "쉬운성경", "niv" };
                 foreach (string bibleName in bibleNames)
                 {
@@ -22,7 +23,7 @@ namespace PAB.Model
                     {
                         bibleName = bibleName,
                         content = jObject[bibleName]["content"].ToString(),
-                        rang = searchWord.Split('$')[1],
+                        rang = searchWord.Split('@')[1],
                     };
                     searchMusicList.Add(bible);
                 }
@@ -57,6 +58,7 @@ namespace PAB.Model
 
         public static void MakeMusicListAdd(int index)
         {
+            if (index < 0) return;
             if (0 < searchMusicList.Count)
             {
                 makeMusicList.Add(searchMusicList[index]);

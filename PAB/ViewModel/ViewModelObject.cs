@@ -26,6 +26,7 @@ namespace PAB.ViewModel
 
         private ICommand _search;
         public ICommand Search => _search ?? (_search = new CommandHandler(() => {
+            _selectMusic = -1;
             SearchList = ListManager.SearchAndGetResultList(SearchWord);
             OnProperChanged("searchList");
         }));
@@ -62,7 +63,7 @@ namespace PAB.ViewModel
             OnProperChanged("setting");
         }));
         
-        private int _selectMusic = 0;
+        private int _selectMusic = -1;
         public int SelectMusic
         {
             get

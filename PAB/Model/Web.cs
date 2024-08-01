@@ -85,20 +85,29 @@ namespace PAB.Model
             return GetResultToHttpWebRequest(url);
         }
 
-        public static string GetNewVersionInIubnsNet()
-        {
-            string url = $"http://iubns.net/PPTMaker/update/version.php";
-            return GetResultToHttpWebRequest(url);
-        }
-
+        //@창 1:1~12
         public static JObject GetBible(string searchWord)
         {
             searchWord = searchWord.Remove(0, 1);
-            string startBook = searchWord.Split(' ')[0];
-            int startChapters = int.Parse(searchWord.Split(' ')[1].Split(':')[0]);
-            int startVerses = int.Parse(searchWord.Split(' ')[1].Split('~')[0].Split(':')[1]);
-            int endChapters = int.Parse(searchWord.Split('~')[1].Split(':')[0]);
-            int endVerses = 0;
+            string startBook;
+            int startChapters;
+            int startVerses;
+            int endChapters;
+
+            try
+            {
+                startBook = searchWord.Split(' ')[0];
+                startChapters = int.Parse(searchWord.Split(' ')[1].Split(':')[0]);
+                startVerses = int.Parse(searchWord.Split(' ')[1].Split('~')[0].Split(':')[1]);
+                endChapters = int.Parse(searchWord.Split('~')[1].Split(':')[0]);
+            }
+            catch
+            {
+                return null;
+            }
+
+            int endVerses;
+
             try
             {
                 endVerses = int.Parse(searchWord.Split('~')[1].Split(':')[1]);

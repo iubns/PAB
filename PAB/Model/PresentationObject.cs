@@ -58,9 +58,9 @@ namespace PAB.Model
             slide = slides.AddSlide(1, customLayout);
             slide.BackgroundStyle = MsoBackgroundStyleIndex.msoBackgroundStylePreset4;
 
-            slide.Shapes[1].Width = 32 / convertToCM;
-            slide.Shapes[1].Height = 18 / convertToCM;
-            slide.Shapes[1].Top = 20;
+            slide.Shapes[1].Width = 33.6f / convertToCM;
+            slide.Shapes[1].Height = 6 / convertToCM;
+            slide.Shapes[1].Top = 30;
             slide.Shapes[1].Left = 0;
 
             slide.Shapes[1].TextFrame.VerticalAnchor = MsoVerticalAnchor.msoAnchorTop;
