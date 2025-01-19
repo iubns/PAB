@@ -38,7 +38,7 @@ namespace PAB.ViewModel
                 MessageBox.Show("오른쪽 상단에 단체 이름을 적어 주세요.");
                 return;
             }
-            Web.SaveLyriceOnServer(IPAdress.GetMacAdress(), Setting.churchName);
+            Web.SaveLyricsOnServer(IPAdress.GetMacAdress(), Setting.churchName);
             new PresnetationObject().CreatePowerPointSlides(Setting);
             Properties.Settings.Default.Save();
         }));

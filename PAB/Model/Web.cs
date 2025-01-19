@@ -93,30 +93,42 @@ namespace PAB.Model
             int startChapters;
             int startVerses;
             int endChapters;
+            int endVerses;
 
             try
             {
                 startBook = searchWord.Split(' ')[0];
                 startChapters = int.Parse(searchWord.Split(' ')[1].Split(':')[0]);
                 startVerses = int.Parse(searchWord.Split(' ')[1].Split('~')[0].Split(':')[1]);
-                endChapters = int.Parse(searchWord.Split('~')[1].Split(':')[0]);
+                
+                bool hasEndChapters = searchWord.Split('~').Length > 1;
+                if (hasEndChapters)
+                {
+                    endChapters = int.Parse(searchWord.Split('~')[1].Split(':')[0]);
+
+                    try
+                    {
+                        endVerses = int.Parse(searchWord.Split('~')[1].Split(':')[1]);
+                    }
+                    catch
+                    {
+                        endVerses = endChapters;
+                        endChapters = startChapters;
+                    }
+                }
+                else
+                {
+                    endChapters = startChapters;
+                    endVerses = startVerses;
+                }
             }
             catch
             {
                 return null;
             }
 
-            int endVerses;
 
-            try
-            {
-                endVerses = int.Parse(searchWord.Split('~')[1].Split(':')[1]);
-            }
-            catch
-            {
-                endVerses = endChapters;
-                endChapters = startChapters;
-            }
+
 
             for (int bookIndex = 0; bookIndex < 66; bookIndex++)
             {
@@ -141,7 +153,7 @@ namespace PAB.Model
             webClient.DownloadFile(browserUrl, "PAB - Praise And Bible.exe");
         }
 
-        public static void SaveLyriceOnServer(string macAdress, string churchName)
+        public static void SaveLyricsOnServer(string macAddress, string churchName)
         {
             foreach (ShowingObject showingObject in ListManager.GetMakeList())
             {
@@ -149,30 +161,40 @@ namespace PAB.Model
                 {
                     continue;
                 }
-                string musicTitle = music.musicTitle;
-                string musicLyrice = music.content;
+                string musicTitle = Uri.EscapeDataString(music.musicTitle);
+                string musicLyrics = Uri.EscapeDataString(music.content);
 
-                string url = $"{ serverDomain }/SaveLyrice.php";
+                string url = $"{serverDomain}/SaveLyrics.php";
                 HttpWebRequest http = (HttpWebRequest)WebRequest.Create(url);
                 http.UserAgent = header_UA;
-                http.ContentType = header_ConType;
-                http.ContentType = header_Accept;
+                http.ContentType = header_ConType; // 올바른 ContentType 선택
                 http.Method = "POST";
                 http.Timeout = 5000;
 
-                using (Stream str = http.GetRequestStream())
+                try
                 {
-                    using (StreamWriter streamWriter = new StreamWriter(str))
+                    using (Stream str = http.GetRequestStream())
                     {
-                        streamWriter.Write($"musicTitle={ musicTitle }&musicLyrice={ musicLyrice }&macAdress={ macAdress }&churchName={ churchName }");
+                        using (StreamWriter streamWriter = new StreamWriter(str))
+                        {
+                            streamWriter.Write($"musicTitle={musicTitle}&musicLyrics={musicLyrics}&macAddress={macAddress}&churchName={churchName}");
+                        }
                     }
-                    using (var webReauest = new StreamReader(http.GetResponse().GetResponseStream()))
+
+                    using (var response = http.GetResponse())
+                    using (var webRequest = new StreamReader(response.GetResponseStream()))
                     {
-                        string temp = webReauest.ReadToEnd();
+                        string responseText = webRequest.ReadToEnd();
                     }
+                }
+                catch 
+                {
+                    // 예외 처리 (오류 기록, 재시도 등)
+                    MessageBox.Show($"서버에 오류가 있습니다.", "서버 오류");
                 }
             }
         }
+
 
         public static JObject GetLyriceOnIubnsServer(string searchWord)
         {

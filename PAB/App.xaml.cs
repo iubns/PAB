@@ -27,7 +27,7 @@ namespace PAB
 
             string newVersion = Web.GetNewVersion();
             if (newVersion != string.Empty &&
-                newVersion != "1.2")
+                newVersion != "1.3.1")
             {
                 MessageBox.Show($"새로운 버전(v{ newVersion }) 있습니다.\n프로그램을 업데이트 합니다.", "업데이트 안내");
                 Web.GetUpdate();
